@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { addReview, getReview, login, signup } from "../controller.js/authController.js";
+import { userAuth } from "../middileware/auth.js";
 const authRouter = Router()
 
 
@@ -11,7 +12,7 @@ authRouter.post(
     '/login',(req,res)=>login(req,res))
 
 authRouter.post(
-     '/addReview',(req,res)=>addReview(req,res))
+     '/addReview',userAuth,(req,res)=>addReview(req,res))
 
 authRouter.get(
    '/getReview',(req,res)=>getReview(req,res))

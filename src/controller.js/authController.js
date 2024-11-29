@@ -2,6 +2,7 @@
 import User from "../model/userModel.js";
 import { EncryptPassword, comparePassword } from "../config/bcryptPassword.js";
 import { generateToken } from "../config/jwt.js";
+import Review from "../model/review.js";
 
 
 
@@ -87,6 +88,43 @@ export const login = async(req,res)  => {
                 })
             }
         }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+export  const addReview = async(req,res)=> {
+    try {
+        console.log(req.body);
+        const { review , userId } = req.body
+        const newReview = new Review({
+            userId,  
+            review,
+          });
+        
+    await newReview.save();
+    return res.status(200).json({ message: 'Review submitted successfully' });
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}   
+
+
+
+export const getReview = async(req,res) =>{
+    try {
+        const reviews = await Review.find()
+            .populate('userId', 'userName profilePicture') 
+            .exec()
+        return res.status(200)
+            .json({
+                message:'fetched review',
+                review: reviews
+            })
     } catch (error) {
         console.log(error);
         
